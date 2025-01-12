@@ -11,6 +11,7 @@ running = True
 # Sprites
 nose_image_paths = ["images/n1.png", "images/n2.png", "images/n3.png", "images/n4.png"]
 eye_image_paths = ["images/e1.png", "images/e2.png", "images/e3.png", "images/e4.png"]
+mouth_image_paths = ["images/m1.png", "images/m2.png", "images/m3.png", "images/m4.png"]
 image_path_index = 0
 current_sprite = pygame.image.load(nose_image_paths[image_path_index])
 sprite_positions = []  
@@ -25,12 +26,16 @@ eye_button_rect = pygame.Rect(50, 100, 100, 50)
 nose_button_color = (0, 0, 255)
 nose_button_rect = pygame.Rect(50, 150, 100, 50)
 
+mouth_button_color = (255, 0, 255)
+mouth_button_rect = pygame.Rect(50, 200, 100, 50)
+
 font = pygame.font.Font(None, 36)
 undo_button_text = font.render("Undo", True, (255, 255, 255))  
 eye_button_text = font.render("Eyes", True, (255, 255, 255))
 nose_button_text = font.render("Nose", True, (255, 255, 255))
+mouth_button_text = font.render("Mouth", True, (255, 255, 255))
 
-sprite_type = 0  # 0 for nose, 1 for eyes
+sprite_type = 0  # 0 for nose, 1 for eyes, 2 for mouth
 
 # Main loop
 while running:
@@ -57,6 +62,11 @@ while running:
                     image_path_index = 0  # Reset index when switching
                     current_sprite = pygame.image.load(nose_image_paths[image_path_index])
                 
+                elif mouth_button_rect.collidepoint(event.pos):
+                    sprite_type = 2
+                    image_path_index = 0
+                    current_sprite = pygame.image.load(mouth_image_paths[image_path_index])
+
                 # Otherwise, place a sprite at the mouse position
                 else:
                     sprite_positions.append((current_sprite, event.pos))
@@ -85,6 +95,10 @@ while running:
     pygame.draw.rect(screen, nose_button_color, nose_button_rect)
     screen.blit(nose_button_text, nose_button_rect.move(10, 10))
 
+    # Draw the Mouth button
+    pygame.draw.rect(screen, mouth_button_color, mouth_button_rect)
+    screen.blit(mouth_button_text, mouth_button_rect.move(10, 10))
+
     # Draw all sprites
     for sprite, pos in sprite_positions:
         rect = sprite.get_rect(center=pos)
@@ -94,3 +108,4 @@ while running:
     clock.tick(60)
 
 pygame.quit()
+
